@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notification Example</title>
+</head>
+<body>
+
+<button onclick="requestNotificationPermission()">Request Notification Permission</button>
+
+<script>
+function requestNotificationPermission() {
+    // Checking if the browser supports notifications
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+    }
+
+    // Checking if the user has blocked notifications
+    else if (Notification.permission === "denied") {
+        alert("You have blocked notifications. Please unblock them in your browser settings.");
+    }
+
+    // Requesting permission if it's not yet granted
+    else if (Notification.permission !== 'granted') {
+        Notification.requestPermission().then(function (permission) {
+            // If the user accepts, show a notification
+            if (permission === "granted") {
+                showNotification();
+            }
+        });
+    }
+
+    // If permission is already granted, show the notification directly
+    else {
+        showNotification();
+    }
+}
+
+function showNotification() {
+    var notification = new Notification("Notification Title", {
+        body: "This is a notification message.",
+        icon: "notification-icon.png" // You can specify an icon if needed
+    });
+
+    // Handling click on the notification
+    notification.onclick = function () {
+        console.log("Notification clicked");
+        // You can define an action to perform when the notification is clicked
+    };
+}
+</script>
+
+</body>
+</html>
